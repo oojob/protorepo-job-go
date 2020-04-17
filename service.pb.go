@@ -24,6 +24,34 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
+type HealthCheckResponse_ServingStatus int32
+
+const (
+	HealthCheckResponse_UNKNOWN     HealthCheckResponse_ServingStatus = 0
+	HealthCheckResponse_SERVING     HealthCheckResponse_ServingStatus = 1
+	HealthCheckResponse_NOT_SERVING HealthCheckResponse_ServingStatus = 2
+)
+
+var HealthCheckResponse_ServingStatus_name = map[int32]string{
+	0: "UNKNOWN",
+	1: "SERVING",
+	2: "NOT_SERVING",
+}
+
+var HealthCheckResponse_ServingStatus_value = map[string]int32{
+	"UNKNOWN":     0,
+	"SERVING":     1,
+	"NOT_SERVING": 2,
+}
+
+func (x HealthCheckResponse_ServingStatus) String() string {
+	return proto.EnumName(HealthCheckResponse_ServingStatus_name, int32(x))
+}
+
+func (HealthCheckResponse_ServingStatus) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_a0b84a42fa06f626, []int{3, 0}
+}
+
 type CreateJobReq struct {
 	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	Descriptioon         string   `protobuf:"bytes,2,opt,name=descriptioon,proto3" json:"descriptioon,omitempty"`
@@ -126,9 +154,91 @@ func (m *CreateJobRes) GetId() string {
 	return ""
 }
 
+// health report
+type HealthCheckRequest struct {
+	Service              string   `protobuf:"bytes,1,opt,name=service,proto3" json:"service,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *HealthCheckRequest) Reset()         { *m = HealthCheckRequest{} }
+func (m *HealthCheckRequest) String() string { return proto.CompactTextString(m) }
+func (*HealthCheckRequest) ProtoMessage()    {}
+func (*HealthCheckRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a0b84a42fa06f626, []int{2}
+}
+
+func (m *HealthCheckRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_HealthCheckRequest.Unmarshal(m, b)
+}
+func (m *HealthCheckRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_HealthCheckRequest.Marshal(b, m, deterministic)
+}
+func (m *HealthCheckRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_HealthCheckRequest.Merge(m, src)
+}
+func (m *HealthCheckRequest) XXX_Size() int {
+	return xxx_messageInfo_HealthCheckRequest.Size(m)
+}
+func (m *HealthCheckRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_HealthCheckRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_HealthCheckRequest proto.InternalMessageInfo
+
+func (m *HealthCheckRequest) GetService() string {
+	if m != nil {
+		return m.Service
+	}
+	return ""
+}
+
+type HealthCheckResponse struct {
+	Status               HealthCheckResponse_ServingStatus `protobuf:"varint,1,opt,name=status,proto3,enum=job.HealthCheckResponse_ServingStatus" json:"status,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                          `json:"-"`
+	XXX_unrecognized     []byte                            `json:"-"`
+	XXX_sizecache        int32                             `json:"-"`
+}
+
+func (m *HealthCheckResponse) Reset()         { *m = HealthCheckResponse{} }
+func (m *HealthCheckResponse) String() string { return proto.CompactTextString(m) }
+func (*HealthCheckResponse) ProtoMessage()    {}
+func (*HealthCheckResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a0b84a42fa06f626, []int{3}
+}
+
+func (m *HealthCheckResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_HealthCheckResponse.Unmarshal(m, b)
+}
+func (m *HealthCheckResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_HealthCheckResponse.Marshal(b, m, deterministic)
+}
+func (m *HealthCheckResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_HealthCheckResponse.Merge(m, src)
+}
+func (m *HealthCheckResponse) XXX_Size() int {
+	return xxx_messageInfo_HealthCheckResponse.Size(m)
+}
+func (m *HealthCheckResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_HealthCheckResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_HealthCheckResponse proto.InternalMessageInfo
+
+func (m *HealthCheckResponse) GetStatus() HealthCheckResponse_ServingStatus {
+	if m != nil {
+		return m.Status
+	}
+	return HealthCheckResponse_UNKNOWN
+}
+
 func init() {
+	proto.RegisterEnum("job.HealthCheckResponse_ServingStatus", HealthCheckResponse_ServingStatus_name, HealthCheckResponse_ServingStatus_value)
 	proto.RegisterType((*CreateJobReq)(nil), "job.CreateJobReq")
 	proto.RegisterType((*CreateJobRes)(nil), "job.CreateJobRes")
+	proto.RegisterType((*HealthCheckRequest)(nil), "job.HealthCheckRequest")
+	proto.RegisterType((*HealthCheckResponse)(nil), "job.HealthCheckResponse")
 }
 
 func init() {
@@ -136,19 +246,27 @@ func init() {
 }
 
 var fileDescriptor_a0b84a42fa06f626 = []byte{
-	// 182 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x64, 0x8f, 0x41, 0xeb, 0x82, 0x40,
-	0x10, 0xc5, 0xff, 0xea, 0x1f, 0xd1, 0xc1, 0x82, 0xe6, 0x10, 0xe2, 0x29, 0xf6, 0xd4, 0xc9, 0x43,
-	0x42, 0x87, 0xae, 0xdd, 0x3c, 0xfa, 0x0d, 0x76, 0xdd, 0x21, 0x56, 0xc8, 0xb1, 0xdd, 0x2d, 0xe8,
-	0xdb, 0x07, 0x8b, 0x48, 0xd2, 0x6d, 0xde, 0x7b, 0xcc, 0xfc, 0xe6, 0xc1, 0xc6, 0x91, 0x7d, 0x99,
-	0x9e, 0xea, 0xc9, 0xb2, 0x67, 0x4c, 0x06, 0x56, 0x42, 0x41, 0x71, 0xb5, 0x24, 0x3d, 0xb5, 0xac,
-	0x3a, 0x7a, 0x20, 0xc2, 0xff, 0x28, 0xef, 0x54, 0x46, 0x87, 0xe8, 0x98, 0x77, 0x61, 0x46, 0x01,
-	0x85, 0x26, 0xd7, 0x5b, 0x33, 0x79, 0xc3, 0x3c, 0x96, 0x71, 0xc8, 0x56, 0x1e, 0x56, 0x90, 0xf5,
-	0xd2, 0xd3, 0x8d, 0xed, 0xbb, 0x4c, 0x42, 0xbe, 0x68, 0x71, 0x5e, 0x31, 0x1c, 0xee, 0x21, 0x75,
-	0x5e, 0xfa, 0xa7, 0x0b, 0x94, 0xac, 0x9b, 0x15, 0x6e, 0x21, 0x36, 0x7a, 0xbe, 0x1e, 0x1b, 0x7d,
-	0xba, 0x40, 0xd2, 0xb2, 0xc2, 0x06, 0xf2, 0x65, 0x1d, 0x77, 0xf5, 0xc0, 0xaa, 0xfe, 0x7e, 0xb9,
-	0xfa, 0xb1, 0x9c, 0xf8, 0x53, 0x69, 0xe8, 0xd8, 0x7c, 0x02, 0x00, 0x00, 0xff, 0xff, 0xdb, 0xed,
-	0x73, 0x9a, 0xf4, 0x00, 0x00, 0x00,
+	// 315 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x52, 0x4f, 0x4b, 0xfb, 0x40,
+	0x10, 0xfd, 0x6d, 0xfa, 0xeb, 0xbf, 0xe9, 0x1f, 0xeb, 0x08, 0x1a, 0x7a, 0x92, 0x3d, 0x88, 0xa7,
+	0xa0, 0x15, 0x3c, 0x14, 0xf1, 0x52, 0x44, 0xad, 0x90, 0x42, 0xaa, 0xf6, 0x28, 0xbb, 0xe9, 0xd0,
+	0xa6, 0x6a, 0x36, 0xcd, 0x6e, 0x05, 0x3f, 0x86, 0x5f, 0xc5, 0x4f, 0x28, 0x5d, 0x92, 0x62, 0xa8,
+	0x5e, 0xbc, 0xed, 0x9b, 0x37, 0x33, 0xef, 0xcd, 0x63, 0xa1, 0xa5, 0x29, 0x7d, 0x8b, 0x42, 0xf2,
+	0x92, 0x54, 0x19, 0x85, 0xa5, 0x85, 0x92, 0x5c, 0x42, 0x73, 0x90, 0x92, 0x30, 0x34, 0x54, 0x32,
+	0xa0, 0x25, 0x22, 0xfc, 0x8f, 0xc5, 0x2b, 0xb9, 0xec, 0x90, 0x1d, 0xd7, 0x03, 0xfb, 0x46, 0x0e,
+	0xcd, 0x29, 0xe9, 0x30, 0x8d, 0x12, 0x13, 0x29, 0x15, 0xbb, 0x8e, 0xe5, 0x0a, 0x35, 0xec, 0x42,
+	0x2d, 0x14, 0x86, 0x66, 0x2a, 0x7d, 0x77, 0x4b, 0x96, 0xdf, 0x60, 0x7e, 0x5e, 0xd0, 0xd0, 0xb8,
+	0x0f, 0x15, 0x6d, 0x84, 0x59, 0x69, 0xab, 0x52, 0x0b, 0x32, 0x84, 0x6d, 0x70, 0xa2, 0x69, 0xb6,
+	0xdd, 0x89, 0xa6, 0xdc, 0x03, 0xbc, 0x21, 0xf1, 0x62, 0xe6, 0x83, 0x39, 0x85, 0xcf, 0x01, 0x2d,
+	0x57, 0xa4, 0x0d, 0xba, 0x50, 0xcd, 0xee, 0xc8, 0x4c, 0xe6, 0x90, 0x7f, 0x30, 0xd8, 0x2b, 0x0c,
+	0xe8, 0x44, 0xc5, 0x9a, 0xf0, 0xb2, 0xa0, 0xd7, 0xee, 0x1d, 0x79, 0x0b, 0x25, 0xbd, 0x1f, 0x3a,
+	0xbd, 0xf1, 0x7a, 0x53, 0x3c, 0x1b, 0xdb, 0xee, 0xdc, 0x17, 0xef, 0x43, 0xab, 0x40, 0x60, 0x03,
+	0xaa, 0x0f, 0xfe, 0x9d, 0x3f, 0x9a, 0xf8, 0x9d, 0x7f, 0x6b, 0x30, 0xbe, 0x0a, 0x1e, 0x6f, 0xfd,
+	0xeb, 0x0e, 0xc3, 0x1d, 0x68, 0xf8, 0xa3, 0xfb, 0xa7, 0xbc, 0xe0, 0xf4, 0x3e, 0x19, 0x94, 0x86,
+	0x4a, 0xe2, 0x29, 0xd4, 0x37, 0x19, 0xe0, 0xae, 0x35, 0xf0, 0x3d, 0xf7, 0xee, 0x56, 0x49, 0x63,
+	0x1f, 0xca, 0xd6, 0x1d, 0x1e, 0x6c, 0xfb, 0xb5, 0x51, 0x74, 0xdd, 0xdf, 0x0e, 0xc1, 0x0b, 0x28,
+	0x4f, 0x84, 0x09, 0xe7, 0x7f, 0x98, 0x3d, 0x61, 0xb2, 0x62, 0x3f, 0xc8, 0xd9, 0x57, 0x00, 0x00,
+	0x00, 0xff, 0xff, 0xd9, 0x9c, 0xd6, 0x25, 0x31, 0x02, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -164,6 +282,8 @@ const _ = grpc.SupportPackageIsVersion6
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type JobClient interface {
 	CreateJob(ctx context.Context, in *CreateJobReq, opts ...grpc.CallOption) (*CreateJobRes, error)
+	Check(ctx context.Context, in *HealthCheckRequest, opts ...grpc.CallOption) (*HealthCheckResponse, error)
+	Watch(ctx context.Context, in *HealthCheckRequest, opts ...grpc.CallOption) (Job_WatchClient, error)
 }
 
 type jobClient struct {
@@ -183,9 +303,52 @@ func (c *jobClient) CreateJob(ctx context.Context, in *CreateJobReq, opts ...grp
 	return out, nil
 }
 
+func (c *jobClient) Check(ctx context.Context, in *HealthCheckRequest, opts ...grpc.CallOption) (*HealthCheckResponse, error) {
+	out := new(HealthCheckResponse)
+	err := c.cc.Invoke(ctx, "/job.Job/Check", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *jobClient) Watch(ctx context.Context, in *HealthCheckRequest, opts ...grpc.CallOption) (Job_WatchClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_Job_serviceDesc.Streams[0], "/job.Job/Watch", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &jobWatchClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type Job_WatchClient interface {
+	Recv() (*HealthCheckResponse, error)
+	grpc.ClientStream
+}
+
+type jobWatchClient struct {
+	grpc.ClientStream
+}
+
+func (x *jobWatchClient) Recv() (*HealthCheckResponse, error) {
+	m := new(HealthCheckResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // JobServer is the server API for Job service.
 type JobServer interface {
 	CreateJob(context.Context, *CreateJobReq) (*CreateJobRes, error)
+	Check(context.Context, *HealthCheckRequest) (*HealthCheckResponse, error)
+	Watch(*HealthCheckRequest, Job_WatchServer) error
 }
 
 // UnimplementedJobServer can be embedded to have forward compatible implementations.
@@ -194,6 +357,12 @@ type UnimplementedJobServer struct {
 
 func (*UnimplementedJobServer) CreateJob(ctx context.Context, req *CreateJobReq) (*CreateJobRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateJob not implemented")
+}
+func (*UnimplementedJobServer) Check(ctx context.Context, req *HealthCheckRequest) (*HealthCheckResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Check not implemented")
+}
+func (*UnimplementedJobServer) Watch(req *HealthCheckRequest, srv Job_WatchServer) error {
+	return status.Errorf(codes.Unimplemented, "method Watch not implemented")
 }
 
 func RegisterJobServer(s *grpc.Server, srv JobServer) {
@@ -218,6 +387,45 @@ func _Job_CreateJob_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Job_Check_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HealthCheckRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(JobServer).Check(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/job.Job/Check",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(JobServer).Check(ctx, req.(*HealthCheckRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Job_Watch_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(HealthCheckRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(JobServer).Watch(m, &jobWatchServer{stream})
+}
+
+type Job_WatchServer interface {
+	Send(*HealthCheckResponse) error
+	grpc.ServerStream
+}
+
+type jobWatchServer struct {
+	grpc.ServerStream
+}
+
+func (x *jobWatchServer) Send(m *HealthCheckResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
 var _Job_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "job.Job",
 	HandlerType: (*JobServer)(nil),
@@ -226,7 +434,17 @@ var _Job_serviceDesc = grpc.ServiceDesc{
 			MethodName: "CreateJob",
 			Handler:    _Job_CreateJob_Handler,
 		},
+		{
+			MethodName: "Check",
+			Handler:    _Job_Check_Handler,
+		},
 	},
-	Streams:  []grpc.StreamDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "Watch",
+			Handler:       _Job_Watch_Handler,
+			ServerStreams: true,
+		},
+	},
 	Metadata: "service.proto",
 }
