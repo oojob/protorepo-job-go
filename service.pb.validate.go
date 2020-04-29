@@ -109,6 +109,16 @@ func (m *Job) Validate() error {
 		}
 	}
 
+	if v, ok := interface{}(m.GetApplicants()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return JobValidationError{
+				field:  "Applicants",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	return nil
 }
 
