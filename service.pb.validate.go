@@ -89,6 +89,8 @@ func (m *Job) Validate() error {
 
 	// no validation rules for Status
 
+	// no validation rules for Type
+
 	if v, ok := interface{}(m.GetPlace()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
 			return JobValidationError{
@@ -176,26 +178,35 @@ var _ interface {
 	ErrorName() string
 } = JobValidationError{}
 
-// Validate checks the field values on CreateJobReq with the rules defined in
+// Validate checks the field values on JobAllResponse with the rules defined in
 // the proto definition for this message. If any rules are violated, an error
 // is returned.
-func (m *CreateJobReq) Validate() error {
+func (m *JobAllResponse) Validate() error {
 	if m == nil {
 		return nil
 	}
 
-	// no validation rules for Name
+	for idx, item := range m.GetJobs() {
+		_, _ = idx, item
 
-	// no validation rules for Descriptioon
+		if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return JobAllResponseValidationError{
+					field:  fmt.Sprintf("Jobs[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
 
-	// no validation rules for Category
+	}
 
 	return nil
 }
 
-// CreateJobReqValidationError is the validation error returned by
-// CreateJobReq.Validate if the designated constraints aren't met.
-type CreateJobReqValidationError struct {
+// JobAllResponseValidationError is the validation error returned by
+// JobAllResponse.Validate if the designated constraints aren't met.
+type JobAllResponseValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -203,22 +214,22 @@ type CreateJobReqValidationError struct {
 }
 
 // Field function returns field value.
-func (e CreateJobReqValidationError) Field() string { return e.field }
+func (e JobAllResponseValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e CreateJobReqValidationError) Reason() string { return e.reason }
+func (e JobAllResponseValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e CreateJobReqValidationError) Cause() error { return e.cause }
+func (e JobAllResponseValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e CreateJobReqValidationError) Key() bool { return e.key }
+func (e JobAllResponseValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e CreateJobReqValidationError) ErrorName() string { return "CreateJobReqValidationError" }
+func (e JobAllResponseValidationError) ErrorName() string { return "JobAllResponseValidationError" }
 
 // Error satisfies the builtin error interface
-func (e CreateJobReqValidationError) Error() string {
+func (e JobAllResponseValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -230,14 +241,14 @@ func (e CreateJobReqValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sCreateJobReq.%s: %s%s",
+		"invalid %sJobAllResponse.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = CreateJobReqValidationError{}
+var _ error = JobAllResponseValidationError{}
 
 var _ interface {
 	Field() string
@@ -245,73 +256,4 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = CreateJobReqValidationError{}
-
-// Validate checks the field values on CreateJobRes with the rules defined in
-// the proto definition for this message. If any rules are violated, an error
-// is returned.
-func (m *CreateJobRes) Validate() error {
-	if m == nil {
-		return nil
-	}
-
-	// no validation rules for Status
-
-	// no validation rules for Id
-
-	return nil
-}
-
-// CreateJobResValidationError is the validation error returned by
-// CreateJobRes.Validate if the designated constraints aren't met.
-type CreateJobResValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e CreateJobResValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e CreateJobResValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e CreateJobResValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e CreateJobResValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e CreateJobResValidationError) ErrorName() string { return "CreateJobResValidationError" }
-
-// Error satisfies the builtin error interface
-func (e CreateJobResValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sCreateJobRes.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = CreateJobResValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = CreateJobResValidationError{}
+} = JobAllResponseValidationError{}
